@@ -1,13 +1,10 @@
-#context:
-#  version: "8.1.2"
-
 outputs:
   - package:
       name: foo
       version: 0.0.1
 
     build:
-      # noarch: python
+      # Not `noarch: python` or `version_independent: true`, simulating arch- and python-versions specific builds
       string: ${{ python }}
       script:
         - mkdir -p "$PREFIX/lib/python$PY_VER/site-packages/foo"
@@ -19,9 +16,10 @@ outputs:
       run:
         - python
         - requests
-        # - python-gil
 
     tests:
       - python:
           imports:
+            # Fails, always uses the latest python. This means the variant restriction is not being applied.
+            # Uncommenting the `host` section above makes this pass.
             - foo.helpers
