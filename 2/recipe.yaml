@@ -1,0 +1,35 @@
+#context:
+#  version: "8.1.2"
+
+outputs:
+  - package:
+      name: foo
+      version: 0.0.1
+
+    build:
+      # noarch: python
+      python:
+        version_independent: true
+      string: ${{ python }}
+      script:
+        - mkdir -p "$PREFIX/lib/python/site-packages/foo"
+        - cp "$HOME/foo/helpers.py" "$PREFIX/lib/python/site-packages/foo/"
+        - mkdir -p "$PREFIX/bin"
+        - cp "$HOME/bin/run" "$PREFIX/bin/"
+
+    requirements:
+      run:
+        - python
+
+    tests:
+      - python:
+          imports:
+            - foo.helpers
+          # Fails if `noarch: python` is excluded, but passes with `version_independent: true`
+          python_version: [3.10.*, 3.11.*]
+      - script:
+          - run
+      # Fails if `noarch: python` or `version_independent` is included
+      #- package_contents:
+      #    bin:
+      #      - run

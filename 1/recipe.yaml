@@ -1,0 +1,27 @@
+#context:
+#  version: "8.1.2"
+
+outputs:
+  - package:
+      name: foo
+      version: 0.0.1
+
+    build:
+      # noarch: python
+      string: ${{ python }}
+      script:
+        - mkdir -p "$PREFIX/lib/python$PY_VER/site-packages/foo"
+        - cp "$HOME/foo/helpers.py" "$PREFIX/lib/python$PY_VER/site-packages/foo/helpers.py"
+
+    requirements:
+      #host:
+      #  - python
+      run:
+        - python
+        - requests
+        # - python-gil
+
+    tests:
+      - python:
+          imports:
+            - foo.helpers
