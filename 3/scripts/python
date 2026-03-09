@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# Avoids needing to install `python` if `python3` is available
+
+python3 "$@"

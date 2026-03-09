@@ -1,0 +1,16 @@
+package:
+  name: foo
+  version: 0.0.1
+
+build:
+  script:
+    - mkdir -p "$PREFIX/bin"
+    - c++ $HOME/main.cpp -o "$PREFIX/bin/hello"
+
+requirements:
+  run:
+    - libcxx
+
+tests:
+  - script:
+      - hello
